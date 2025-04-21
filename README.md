@@ -1,20 +1,38 @@
-Task 1: Data Cleaning and Preprocessing
+import pandas as pd # type: ignore
 
- Objective: Clean and prepare a raw dataset (with nulls, duplicates, inconsistent formats).
- Tools: Excel / Python (Pandas)
- Deliverables: Cleaned dataset + short summary of change
 
-  Hints / Mini Guide:
- Identify and handle missing values using .isnull() in Python or filters in Excel.
- Remove duplicate rows using .drop_duplicates() or Excel’s “Remove Duplicates”.
- Standardize text values like gender, country names, etc.
- Convert date formats to a consistent type (e.g., dd-mm-yyyy).
- Rename column headers to be clean and uniform (e.g., lowercase, no spaces).
- Check and fix data types (e.g., age should be int, date as datetime)
+df = pd.read_csv('Mall_Customers.csv')
 
-  Dataset names from Kaggle suitable for Task 1:
- Customer Personality Analysis
- Medical Appointment No Shows
- Mall Customer Segmentation Data
- Netflix Movies and TV Shows
- Sales Data
+
+print("Initial Data Overview:")
+print(df.info())
+print(df.head())
+
+# 2. Handle missing values
+print("\nMissing Values Before Cleaning:")
+print(df.isnull().sum())
+
+
+df.dropna(inplace=True)
+
+df.drop_duplicates(inplace=True)
+
+
+df['Gender'] = df['Gender'].str.strip().str.capitalize()
+
+
+
+
+df.columns = [col.strip().lower().replace(' ', '_') for col in df.columns]
+
+# 7. Fix data types
+df['age'] = df['age'].astype(int)
+
+
+print("\nCleaned Data Overview:")
+print(df.info())
+print(df.head())
+
+# 9. Save cleaned data
+df.to_csv('Cleaned_Mall_Customers.csv', index=False)
+print("\n✅ Cleaned dataset saved as 'Cleaned_Mall_Customers.csv'")
